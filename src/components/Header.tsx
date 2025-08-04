@@ -1,44 +1,27 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import SmartLink from "./ui/SmartLink";
 
 const navItems = [
-  { href: "#hero", label: "Home", icon: "bi-house" },
-  { href: "#about", label: "About", icon: "bi-person" },
-  { href: "#resume", label: "Resume", icon: "bi-file-earmark-text" },
-  { href: "#portfolio", label: "Portfolio", icon: "bi-images" },
-  { href: "#services", label: "Services", icon: "bi-hdd-stack" },
-  { href: "#contact", label: "Contact", icon: "bi-envelope" }
+  { href: "/", label: "Home", icon: "bi-house" },
+  { href: "/about", label: "About", icon: "bi-person" },
+  { href: "/resume", label: "Resume", icon: "bi-file-earmark-text" },
+  { href: "/projects", label: "Portfolio", icon: "bi-images" },
+  { href: "/services", label: "Services", icon: "bi-hdd-stack" },
+  { href: "/contact", label: "Contact", icon: "bi-envelope" }
 ];
 
 export default function SidebarNav() {
-  const [activeSection, setActiveSection] = useState<string | null>("#hero");
+
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(`#${entry.target.id}`);
-        }
-      });
-    }, { rootMargin: "-30% 0px -60% 0px", threshold: 0.3 });
+  const isActive = (href: string) => pathname === href;
 
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    navItems.forEach(item => {
-      timers.push(setTimeout(() => {
-        const section = document.getElementById(item.href.substring(1));
-        if (section) observer.observe(section);
-      }, 500));
-    });
-
-    return () => {
-      observer.disconnect();
-      timers.forEach(clearTimeout);
-    };
-  }, []);
 
   const liVariants = {
     hidden: { opacity: 0, x: 30 },
@@ -64,14 +47,14 @@ export default function SidebarNav() {
                 animate="visible"
                 transition={{ delay: 0.1 * i }}
               >
-                <a href={item.href} className={`flex items-center gap-3 text-lg transition-colors duration-300 ${
-                  activeSection === item.href
+                <SmartLink href={item.href} className={`flex items-center gap-3 text-lg transition-colors duration-300 ${
+                  isActive( item.href)
                     ? "text-[var(--text-active)] font-semibold"
                     : "hover:text-[var(--text-active)] text-white"
                 }`}>
                   <i className={`bi ${item.icon}`}></i>
                   <span>{item.label}</span>
-                </a>
+                </SmartLink>
               </motion.li>
             ))}
           </ul>
@@ -95,7 +78,7 @@ export default function SidebarNav() {
                 {navItems.map((item, i) => (
                   <motion.li key={item.href} variants={liVariants} initial="hidden" animate="visible" transition={{delay:0.1*i}}>
                     <a href={item.href} onClick={() => setOpen(false)} className={`flex items-center gap-3 transition-colors duration-300 ${
-                      activeSection === item.href
+                      isActive( item.href)
                         ? "text-[var(--text-active)] font-semibold"
                         : "hover:text-[var(--text-active)] text-white"
                     }`}>

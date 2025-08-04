@@ -1,8 +1,8 @@
 "use client"
 import type { FC } from 'react';
 import Service from './Service';
-import OkIcon from '../ui/OkIcon';
 import {motion} from 'framer-motion'
+import OkIcon from './ui/OkIcon';
 
 const serviceList = [
     {
@@ -57,29 +57,23 @@ const serviceList = [
 
 const ServiceList: FC = () => {
         return (
-            <section className='my-5 sm:my-20'>
+            <section className='my-5 sm:my-20 min-h-screen w-full lg:w-[80%]'>
                 <motion.div className=' text-center'
    
                 >
                     <motion.h2 className='text-center py-5 my-5  text-3xl sm:py-10 font-bold sm:text-4xl'
                     initial= {{ opacity:0, y: 40 }}
-              
-                transition={{ duration:1, delay:0.3}}
-                whileInView={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.03 }}
-          viewport={{ once: true }}
+                    animate = {{opacity : 1, y: 0}}
+                    transition={{ duration:1, delay:0.3}}
                     >Services</motion.h2>
                     <motion.p className='text-xl px-5 text-[var(--text-element-small-black)]'
                     initial= {{ opacity:0, y: 40 }}
-              
-                transition={{ duration:1, delay:0.3}}
-                whileInView={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.03 }}
-          viewport={{ once: true }}
+                    animate = {{opacity : 1, y: 0}}
+                    transition={{ duration:1, delay:0.3}}
                     >Lorem, ipsum dolor sit amet consectetur adipisicing elit.</motion.p>
                 </motion.div>
                 {/* lists  */}
-                <div className='mt-20 grid grid-cols-1  md:grid-cols-2  2xl:grid-cols-4 gap-5  sm:px-20  justify-items-center'
+                <div className='mt-20 flex justify-center flex-wrap gap-2 sm:px-10  justify-items-center'
 
                 >
                     {serviceList.map((service,index) => (
